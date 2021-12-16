@@ -23,29 +23,31 @@ def bot_stats():
     print ('main logs')
     try:
         from_timestamp = int(datetime.fromisoformat(request.json["from_date"]).timestamp() * 1000)
-        print('leggo from_timestamp utente:',from_timestamp)
+        print('parametro \'from_timestamp\':',from_timestamp)
     except:
-        print('parto con from_timestamp = 0')
+        print('parto con \'from_timestamp\' = 0')
         from_timestamp = 0
 
     try:
         delta2359= timedelta(0,0,0,0,0,24)
         read_date = datetime.fromisoformat(request.json["to_date"])
         to_timestamp = int((read_date + delta2359).timestamp()*1000)     #aggiungo le 23:59 e moltiplico per 1000
-        print('leggo to_timestamp utente:',to_timestamp)
+        print('parametro \'to_timestamp\' :',to_timestamp)
     except Exception as e:
-        print('parto con to_timestamp = 0')
+        print('parto con \'to_timestamp\' = 0')
         to_timestamp = 0
 
     try:
         demoTrading=request.json["demoTrading"]
+        print('parametro \'demoTrading\' :',demoTrading)
     except Exception as e: 
-        print('parto con demoTrading default a 1')
-        demoTrading= '1'
+        print('parto con demoTrading default (0)')
+        demoTrading= '0'
 
     #possible values: 'binancef','okexm'
     try:
         exchangeType=request.json["exchangeType"]
+        print('parametro \'exchangeType\' :',exchangeType)
     except Exception as e: 
         print('exchangeType non valorizzato')
         exchangeType= ''

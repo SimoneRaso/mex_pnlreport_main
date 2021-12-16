@@ -17,7 +17,8 @@ from positionsummary import PositionSummary
 from botsummary import BotSummary
 
 # constanti
-INST_TYPE = "SWAP"                      #Mercato di riferimento
+#INST_TYPE = "SWAP"                      #Mercato di riferimento
+INST_TYPE = "MARGIN"                    #Mercato di riferimento
 
 class OkexBotSummary:
     accountAPI = None
