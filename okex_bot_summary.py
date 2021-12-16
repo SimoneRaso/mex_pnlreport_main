@@ -80,14 +80,13 @@ class OkexBotSummary:
             account = {}
         #botf.__dump_obj_to_file(account,'account.json')
 
-        #Retriving postions information
-        positions= self.accountAPI.get_positions()
+        #Retriving positions information
         try:
-            postions = self.accountAPI.get_positions(instType=INST_TYPE)
+            positions = self.accountAPI.get_positions(instType=INST_TYPE)
             #recupero il balance dell'account
             bot_summary.balance = float(account['data'][0]['details'][0]['cashBal'])
             #carico le posizioni divise per symbol
-            for p in postions['data']:
+            for p in positions['data']:
                 symbol = self.__get_symbol(p)
                 positions_by_symbol[symbol] = p
         except Exception as e: 
@@ -187,7 +186,7 @@ class OkexBotSummary:
         bot_summary.positions = {}
         bot_summary.positionsTot = tot
 
-        accepted_positionSide = {'LONG', 'SHORT'}
+        accepted_positionSide = {'LONG', 'SHORT', 'NET'}
         if(account == {}):
             for symbol in income_by_symbol.keys():
                 income = income_by_symbol[symbol]
@@ -311,12 +310,13 @@ class OkexBotSummary:
             if asset in asset_prices:
                 asset_price = asset_prices[asset]
             elif int(now.timestamp()) - end_timestamp > 24 * 60 * 60 * 1000:
-                kline = self.marketAPI.get_candlesticks(instId=asset + 'USDT', bar='1d', limit=1, before=end_timestamp)
+                kline = self.marketAPI.get_candlesticks(instId=asset + '-USDT', bar='1d', limit=1, before=end_timestamp)
                 asset_price = float(kline[0][4])
                 asset_prices[asset] = asset_price
             else:
-                avg_price = self.tradeAPI.get_order_list(instType=asset)
-                asset_price = float(avg_price['price'])
+                #avg_price = self.tradeAPI.get_order_list(instType=asset)
+                avg_price = self.tradeAPI.get_order_list(instId=asset + '-USDT')
+                asset_price = float(avg_price['data'][0]['px'])
                 asset_prices[asset] = asset_price
         except Exception as e: 
             asset_price = 1.0
