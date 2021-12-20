@@ -46,14 +46,14 @@ def bot_stats():
 
     #possible values: 'binancef','okexm'
     try:
-        exchangeType=request.json["exchangeType"]
-        print('parametro \'exchangeType\' :',exchangeType)
+        exchange=request.json["exchange"]
+        print('parametro \'exchange\' :',exchange)
     except Exception as e: 
-        print('exchangeType non valorizzato')
-        exchangeType= ''
+        print('exchange non valorizzato')
+        exchange= ''
     
     bs={}
-    match exchangeType:
+    match exchange:
         case 'binancef':
             bs = BinanceBotSummary("", request.json["api_key"], request.json["api_secret"], start_timestamp=from_timestamp, end_timestamp=to_timestamp).get_JSON_summary()
         case 'okexm':
